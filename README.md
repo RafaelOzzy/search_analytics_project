@@ -1,4 +1,4 @@
-Search Analytics App
+Search Analytics Project
 
 This is a simple Ruby on Rails application that tracks search terms and displays analytics on most common searches.
 
@@ -38,8 +38,8 @@ Setup
 
 Clone the repository:
 
-git clone https://github.com/your-username/search_analytics_app.git
-cd search_analytics_app
+git clone https://github.com/your-username/search_analytics_project.git
+cd search_analytics_project
 
 Install dependencies:
 
