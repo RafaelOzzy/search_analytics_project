@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Article Search</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 40px auto;
+    max-width: 800px;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .article {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .article-title {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #005fa3;
+  }
+
+  .article-snippet {
+    margin: 5px 0 0;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Search Articles</h1>
+    <input type="text" id="search-box" placeholder="Type to search articles..." />
+    <div id="results"></div>
+  </div>
+  <script>
+    const input = document.getElementById('search-box');
+    const resultsDiv = document.getElementById('results');
+    let timeout = null;
+
+    input.addEventListener('keyup', () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        const term = input.value.trim();
+        if (term.length >= 3) {
+          fetch(`/articles/search?term=${encodeURIComponent(term)}`)
+            .then(res => res.json())
+            .then(data => {
+              resultsDiv.innerHTML = '';
+              if (data.length === 0) {
+                resultsDiv.innerHTML = '<p>No results found.</p>';
+                return;
+              }
+              data.forEach(article => {
+                const div = document.createElement('div');
+                div.className = 'article';
+                div.innerHTML = `
+                  <div class="article-title">${article.title}</div>
+                  <div class="article-snippet">${article.content}</div>
+                `;
+                resultsDiv.appendChild(div);
+              });
+            });
+        } else {
+          resultsDiv.innerHTML = '<p>Type at least 3 characters to search.</p>';
+        }
+      }, 500);
+    });
+  </script>
+</body>
+</html>
